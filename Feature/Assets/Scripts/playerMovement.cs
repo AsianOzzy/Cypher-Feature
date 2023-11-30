@@ -7,14 +7,11 @@ public class playerMovement : MonoBehaviour
 {
     PlayerInputAction playerActions;
 
-    private Rigidbody body;
-
     public float moveSpeed = 20f;
 
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        body = GetComponent<Rigidbody>();
     }
 
     private void Awake()
@@ -26,8 +23,10 @@ public class playerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector2 moveVec = playerActions.playerInGameAction.Move.ReadValue<Vector2>();
-        GetComponent<Rigidbody>().transform.position += new Vector3(moveVec.x * moveSpeed * Time.deltaTime, moveVec.y * moveSpeed * Time.deltaTime);
+        Vector3 moveVec = playerActions.playerInGameAction.Move.ReadValue<Vector2>();
+
+        Vector3 movement = (moveVec.y * transform.forward) + (moveVec.x * transform.right);
+        GetComponent<CharacterController>().Move(movement * moveSpeed * Time.deltaTime);
     }
 
     public void Jump(InputAction.CallbackContext context)
