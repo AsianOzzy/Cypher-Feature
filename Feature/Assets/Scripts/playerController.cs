@@ -26,6 +26,16 @@ public class playerController : MonoBehaviour
         cypherArm.SetActive(false);
     }
 
+    private void Update()
+    {
+        if (cypherCamera != null)
+        {
+            cypherCamera.transform.position = pos;
+        }
+
+
+    }
+
     private void Awake()
     {
         playerActions = new PlayerInputAction();
@@ -40,9 +50,10 @@ public class playerController : MonoBehaviour
         Vector3 movement = (moveVec.y * transform.forward) + (moveVec.x * transform.right);
         GetComponent<CharacterController>().Move(movement * moveSpeed * Time.deltaTime);
 
-        if (cypherCamera != null)
+        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadDefaultValue());
+        if (Physics.Raycast(ray, out hit, 1000f, layerMask))
         {
-            cypherCamera.transform.position = pos;
+            pos = hit.point;
         }
     }
 
@@ -58,28 +69,15 @@ public class playerController : MonoBehaviour
 
     public void Equip(InputAction.CallbackContext context)
     {
-        bool camEquipped = true;
-
         Debug.Log("Camera Equipped :" + context.phase);
         if (context.performed)
         {
             cypherArm.SetActive(true);
         }
 
-        if (camEquipped == true)
-        {
-            Debug.Log("Raycast works");
-            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadDefaultValue());
-            if (Physics.Raycast(ray, out hit, 1000f, layerMask))
-            {
-                Debug.Log("Camera Hovering :" + context.phase);
-                pos = hit.point;
-            }
-            if (cypherCamera == null)
-            {
-                cypherCamera = Instantiate(cypherCamera, pos, transform.rotation);
-            }
-        }
+        Debug.Log("Camera Hovering");
+        cypherCamera = Instantiate(cypherCamera, pos, transform.rotation);
+
     }
 
     public void placeCam(InputAction.CallbackContext context)

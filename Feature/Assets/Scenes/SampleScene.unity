@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1788,7 +1788,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 10
   cypherArm: {fileID: 329579377}
-  cypherCamera: {fileID: 3613291054085523199, guid: 205d95967da833a4896fa0c95a72381d, type: 3}
+  cypherCamera: {fileID: 72268400530027689, guid: 4c90ba53e35cab94a80122f2080921ed, type: 3}
   layerMask:
     serializedVersion: 2
     m_Bits: 8
