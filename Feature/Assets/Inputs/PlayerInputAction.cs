@@ -44,6 +44,33 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Equip"",
+                    ""type"": ""Button"",
+                    ""id"": ""00bbb4f6-9485-4b60-926a-fd6e1f7624b3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""placeCam"",
+                    ""type"": ""Button"",
+                    ""id"": ""66c716ad-524b-4b84-aa37-27dd0a88b6e4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""shootDart"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""eb7474ba-d809-45d7-8e66-d0b9e2dee158"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -112,6 +139,39 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b642a3c4-c2be-4ac7-bc25-aa34cc307dbd"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Equip"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fc21a459-895a-4331-863c-38a540770f90"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""placeCam"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b76fa7d3-a8fd-45be-955f-6e1bc6dcd343"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""shootDart"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -122,6 +182,9 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         m_playerInGameAction = asset.FindActionMap("playerInGameAction", throwIfNotFound: true);
         m_playerInGameAction_Move = m_playerInGameAction.FindAction("Move", throwIfNotFound: true);
         m_playerInGameAction_Jump = m_playerInGameAction.FindAction("Jump", throwIfNotFound: true);
+        m_playerInGameAction_Equip = m_playerInGameAction.FindAction("Equip", throwIfNotFound: true);
+        m_playerInGameAction_placeCam = m_playerInGameAction.FindAction("placeCam", throwIfNotFound: true);
+        m_playerInGameAction_shootDart = m_playerInGameAction.FindAction("shootDart", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -185,12 +248,18 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
     private List<IPlayerInGameActionActions> m_PlayerInGameActionActionsCallbackInterfaces = new List<IPlayerInGameActionActions>();
     private readonly InputAction m_playerInGameAction_Move;
     private readonly InputAction m_playerInGameAction_Jump;
+    private readonly InputAction m_playerInGameAction_Equip;
+    private readonly InputAction m_playerInGameAction_placeCam;
+    private readonly InputAction m_playerInGameAction_shootDart;
     public struct PlayerInGameActionActions
     {
         private @PlayerInputAction m_Wrapper;
         public PlayerInGameActionActions(@PlayerInputAction wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_playerInGameAction_Move;
         public InputAction @Jump => m_Wrapper.m_playerInGameAction_Jump;
+        public InputAction @Equip => m_Wrapper.m_playerInGameAction_Equip;
+        public InputAction @placeCam => m_Wrapper.m_playerInGameAction_placeCam;
+        public InputAction @shootDart => m_Wrapper.m_playerInGameAction_shootDart;
         public InputActionMap Get() { return m_Wrapper.m_playerInGameAction; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -206,6 +275,15 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @Equip.started += instance.OnEquip;
+            @Equip.performed += instance.OnEquip;
+            @Equip.canceled += instance.OnEquip;
+            @placeCam.started += instance.OnPlaceCam;
+            @placeCam.performed += instance.OnPlaceCam;
+            @placeCam.canceled += instance.OnPlaceCam;
+            @shootDart.started += instance.OnShootDart;
+            @shootDart.performed += instance.OnShootDart;
+            @shootDart.canceled += instance.OnShootDart;
         }
 
         private void UnregisterCallbacks(IPlayerInGameActionActions instance)
@@ -216,6 +294,15 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @Equip.started -= instance.OnEquip;
+            @Equip.performed -= instance.OnEquip;
+            @Equip.canceled -= instance.OnEquip;
+            @placeCam.started -= instance.OnPlaceCam;
+            @placeCam.performed -= instance.OnPlaceCam;
+            @placeCam.canceled -= instance.OnPlaceCam;
+            @shootDart.started -= instance.OnShootDart;
+            @shootDart.performed -= instance.OnShootDart;
+            @shootDart.canceled -= instance.OnShootDart;
         }
 
         public void RemoveCallbacks(IPlayerInGameActionActions instance)
@@ -237,5 +324,8 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnEquip(InputAction.CallbackContext context);
+        void OnPlaceCam(InputAction.CallbackContext context);
+        void OnShootDart(InputAction.CallbackContext context);
     }
 }
